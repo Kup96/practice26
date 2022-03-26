@@ -1,64 +1,50 @@
-
+const {
+  Model
+} = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define('Users', {
-    id: {
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true,
-      type: DataTypes.INTEGER,
+  class User extends Model {
+
+
+    static associate(models) {
+      User.hasMany(models.Ofers, {
+        foreignKey: 'userId',
+        targetKey: 'id',
+      })
+      User.hasMany(models.Contests, {
+        foreignKey: 'contestId',
+        targetKey: 'id',
+      })
+      User.hasMany(models.Ratings, {
+        foreignKey: 'contestId',
+        targetKey: 'id',
+      })
+    }
+  }
+
+
+  User.init({
+    id: DataTypes.INTEGER,
+    firstName: DataTypes.STRING,
+    lastName: DataTypes.STRING,
+    displayName: DataTypes.STRING,
+    password: DataTypes.STRING,
+    email: DataTypes.STRING,
+    avatar: DataTypes.STRING,
+    role: DataTypes.ENUM('customer', 'creator'),
+    balance: DataTypes.DECIMAL,
+    accessToken: DataTypes.TEXT,
+    rating: DataTypes.FLOAT,
+
+
     },
-    firstName: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    lastName: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    displayName: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-    },
-    avatar: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      defaultValue: 'anon.png',
-    },
-    role: {
-      type: DataTypes.ENUM('customer', 'creator'),
-      allowNull: false,
-    },
-    balance: {
-      type: DataTypes.DECIMAL,
-      allowNull: false,
-      defaultValue: 0,
-      validate: {
-        min: 0,
-      },
-    },
-    accessToken: {
-      type: DataTypes.TEXT,
-      allowNull: true,
-    },
-    rating: {
-      type: DataTypes.FLOAT,
-      allowNull: false,
-      defaultValue: 0,
-    },
-  },
-  {
-    timestamps: false,
-  });
+
+    {
+      sequelize,
+      modelName: "User",
+      timestamps: false
+    });
+
 
   User.associate = function (models) {
     User.hasMany(models.Order, { foreignKey: 'user_id', targetKey: 'id' });

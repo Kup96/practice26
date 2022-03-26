@@ -1,21 +1,35 @@
-
+const {
+  Model
+} = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  const SelectBox = sequelize.define('Selects', {
-    type: {
-      allowNull: false,
-      primaryKey: true,
-      type: DataTypes.STRING,
+  class SelectBox extends Model {
+
+
+    static associate(models) {
+      SelectBox.belongsTo(models.User, {
+        foreignKey: 'userId',
+        sourceKet: 'id',
+      })
+      SelectBox.belongsTo(models.Offers, {
+        foreignKey: 'contestId',
+        targetKey: 'id',
+      })
+
+    }
+  }
+
+  SelectBox.init({
+    type: DataTypes.STRING,
+    describe: DataTypes.STRING,
+
     },
-    describe: {
-      allowNull: false,
-      primaryKey: true,
-      type: DataTypes.STRING,
-    },
-  },
-  {
-    timestamps: false,
-  });
+
+    {
+      sequelize,
+      modelName: "SelectBox",
+      timestamps: false
+    });
 
   return SelectBox;
 };

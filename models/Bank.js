@@ -1,30 +1,25 @@
-
+const {
+  Model
+} = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  return sequelize.define('Banks', {
-    cardNumber: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      primaryKey: true,
+  class Banks extends Model {
+
+    static associate(models) {
+// У банков нет ассоциаций как я понял
+  }
+  }
+    Banks.init({
+      cardNumber: DataTypes.STRING,
+      name: DataTypes.STRING,
+      expiry: DataTypes.STRING,
+      cvc: DataTypes.STRING,
+      balance: DataTypes.DECIMAL,
     },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    expiry: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    cvc: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    balance: {
-      type: DataTypes.DECIMAL,
-      allowNull: false,
-      defaultValue: 0,
-    },
-  }, {
-    timestamps: false,
+{
+    sequelize,
+    modelName: 'Banks',
+    timestamps: false
   });
+  return Banks;
 };
